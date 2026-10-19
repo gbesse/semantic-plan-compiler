@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Semantic Plan Compiler</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/">SEMANTIC / PLAN COMPILER</a>
+      <nav aria-label="Language">
+        <a href="?lang=fr">FR</a><a href="?lang=en">EN</a><a href="?lang=es">ES</a>
+      </nav>
+    </header>
+    <main>
+      <section class="intro">
+        <p class="eyebrow" data-i18n="eyebrow"></p>
+        <h1 data-i18n="title"></h1>
+        <p class="lede" data-i18n="lede"></p>
+      </section>
+      <section class="workspace">
+        <aside>
+          <span class="number">01 /</span>
+          <h2 data-i18n="experiment"></h2>
+          <label class="field" for="mode" data-i18n="mode"></label
+          ><select id="mode">
+            <option value="cold" data-i18n="cold"></option>
+            <option value="warm" data-i18n="warm"></option>
+            <option value="changed" data-i18n="changed"></option>
+            <option value="policy" data-i18n="policy"></option>
+            <option value="review" data-i18n="review"></option></select
+          ><button id="run" data-i18n="run"></button>
+          <p id="status" role="status"></p>
+          <p class="hint" data-i18n="fixture"></p>
+          <p class="hint" data-i18n="cache"></p>
+        </aside>
+        <article>
+          <div class="section-head">
+            <div>
+              <span class="number">02 /</span>
+              <h2 data-i18n="execution"></h2>
+            </div>
+            <span class="badge" data-i18n="synthetic"></span>
+          </div>
+          <div class="metrics">
+            <div><strong id="naive">—</strong><span data-i18n="naive"></span></div>
+            <div><strong id="calls">—</strong><span data-i18n="calls"></span></div>
+            <div><strong id="questions">—</strong><span data-i18n="questions"></span></div>
+          </div>
+          <h3 data-i18n="dag"></h3>
+          <div id="dag" class="dag"></div>
+          <p class="hint" data-i18n="arithmetic"></p>
+          <h3 data-i18n="decisions"></h3>
+          <div id="rows"></div>
+          <h3 data-i18n="sql"></h3>
+          <pre id="sql"></pre>
+          <pre id="sql-rows"></pre>
+          <h3 data-i18n="trace"></h3>
+          <div id="trace"></div>
+          <div class="actions">
+            <button id="download" class="secondary" data-i18n="download"></button
+            ><code id="digest"></code>
+          </div>
+        </article>
+      </section>
+      <footer>
+        <p data-i18n="limits"></p>
+        <a href="https://github.com/gbesse/semantic-plan-compiler">GitHub ↗</a>
+      </footer>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

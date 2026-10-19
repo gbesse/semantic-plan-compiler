@@ -1,0 +1,110 @@
+{
+  "plan": {
+    "model": "jev-1.13.0",
+    "policy_version": "demo-1",
+    "nodes": [
+      {
+        "id": "amount_due",
+        "kind": "subtract",
+        "reads": [
+          "invoice_cents",
+          "paid_cents"
+        ]
+      },
+      {
+        "id": "topic",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Classer le message : facturation, problème technique ou autre.",
+        "criteria": {
+          "billing": "Demande de facturation",
+          "technical": "Problème technique",
+          "other": "Autre demande"
+        }
+      },
+      {
+        "id": "topic_copy",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Classer le message : facturation, problème technique ou autre.",
+        "criteria": {
+          "billing": "Demande de facturation",
+          "technical": "Problème technique",
+          "other": "Autre demande"
+        }
+      },
+      {
+        "id": "urgency",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+        "criteria": {
+          "urgent": "Interruption de service actuelle",
+          "routine": "Pas d’interruption actuelle déclarée",
+          "unknown": "Contexte insuffisant"
+        }
+      },
+      {
+        "id": "route",
+        "kind": "choice",
+        "reads": [
+          "message",
+          "customer_tier"
+        ],
+        "depends": [
+          "amount_due"
+        ],
+        "when": {
+          "node": "topic",
+          "equals": "billing"
+        },
+        "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+        "criteria": {
+          "priority": "Client premium et correction de facture",
+          "standard": "Autre client, demande de facture",
+          "manual": "Contexte insuffisant"
+        }
+      }
+    ]
+  },
+  "rows": [
+    {
+      "id": "row-1",
+      "message": "Merci de corriger cette facture.",
+      "customer_tier": "standard",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    },
+    {
+      "id": "row-2",
+      "message": "Merci de corriger cette facture.",
+      "customer_tier": "premium",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    },
+    {
+      "id": "row-3",
+      "message": "Merci de corriger cette facture.",
+      "customer_tier": "standard",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    },
+    {
+      "id": "row-4",
+      "message": "Une panne empêche tous les accès.",
+      "customer_tier": "standard",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    }
+  ]
+}

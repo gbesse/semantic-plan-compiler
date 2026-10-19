@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "semantic-plan-compiler"
+version = "0.1.0a1"
+description = "Plans de décisions typées · Typed decision plans · Planes de decisiones tipadas"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["certifi==2026.10.18"]
+
+[project.scripts]
+semantic-plan = "semantic_plan.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["semantic_plan*"]
+
+[tool.setuptools.package-data]
+semantic_plan = ["web/*", "examples/*"]

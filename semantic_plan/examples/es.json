@@ -1,0 +1,110 @@
+{
+  "plan": {
+    "model": "jev-1.13.0",
+    "policy_version": "demo-1",
+    "nodes": [
+      {
+        "id": "amount_due",
+        "kind": "subtract",
+        "reads": [
+          "invoice_cents",
+          "paid_cents"
+        ]
+      },
+      {
+        "id": "topic",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Clasificar el mensaje: facturación, problema técnico u otro.",
+        "criteria": {
+          "billing": "Petición de facturación",
+          "technical": "Problema técnico",
+          "other": "Otra petición"
+        }
+      },
+      {
+        "id": "topic_copy",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Clasificar el mensaje: facturación, problema técnico u otro.",
+        "criteria": {
+          "billing": "Petición de facturación",
+          "technical": "Problema técnico",
+          "other": "Otra petición"
+        }
+      },
+      {
+        "id": "urgency",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Elegir urgent solo si el mensaje describe una interrupción actual; si no, routine o unknown si no se puede decidir.",
+        "criteria": {
+          "urgent": "Interrupción actual del servicio",
+          "routine": "Sin interrupción actual declarada",
+          "unknown": "Contexto insuficiente"
+        }
+      },
+      {
+        "id": "route",
+        "kind": "choice",
+        "reads": [
+          "message",
+          "customer_tier"
+        ],
+        "depends": [
+          "amount_due"
+        ],
+        "when": {
+          "node": "topic",
+          "equals": "billing"
+        },
+        "instructions": "Elegir priority para un cliente premium que pide corregir una factura; standard para otros clientes, manual si falta contexto.",
+        "criteria": {
+          "priority": "Cliente premium y corrección de factura",
+          "standard": "Otro cliente con petición de factura",
+          "manual": "Contexto insuficiente"
+        }
+      }
+    ]
+  },
+  "rows": [
+    {
+      "id": "row-1",
+      "message": "Por favor corrijan esta factura.",
+      "customer_tier": "standard",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    },
+    {
+      "id": "row-2",
+      "message": "Por favor corrijan esta factura.",
+      "customer_tier": "premium",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    },
+    {
+      "id": "row-3",
+      "message": "Por favor corrijan esta factura.",
+      "customer_tier": "standard",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    },
+    {
+      "id": "row-4",
+      "message": "Una interrupción impide todos los accesos.",
+      "customer_tier": "standard",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    }
+  ]
+}
