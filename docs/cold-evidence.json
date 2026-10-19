@@ -1,0 +1,1847 @@
+{
+  "mode": "cold",
+  "synthetic": true,
+  "source_case": {
+    "plan": {
+      "model": "jev-1.13.0",
+      "policy_version": "demo-1",
+      "nodes": [
+        {
+          "id": "amount_due",
+          "kind": "subtract",
+          "reads": [
+            "invoice_cents",
+            "paid_cents"
+          ]
+        },
+        {
+          "id": "topic",
+          "kind": "choice",
+          "reads": [
+            "message"
+          ],
+          "instructions": "Classer le message : facturation, problème technique ou autre.",
+          "criteria": {
+            "billing": "Demande de facturation",
+            "technical": "Problème technique",
+            "other": "Autre demande"
+          }
+        },
+        {
+          "id": "topic_copy",
+          "kind": "choice",
+          "reads": [
+            "message"
+          ],
+          "instructions": "Classer le message : facturation, problème technique ou autre.",
+          "criteria": {
+            "billing": "Demande de facturation",
+            "technical": "Problème technique",
+            "other": "Autre demande"
+          }
+        },
+        {
+          "id": "urgency",
+          "kind": "choice",
+          "reads": [
+            "message"
+          ],
+          "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+          "criteria": {
+            "urgent": "Interruption de service actuelle",
+            "routine": "Pas d’interruption actuelle déclarée",
+            "unknown": "Contexte insuffisant"
+          }
+        },
+        {
+          "id": "route",
+          "kind": "choice",
+          "reads": [
+            "message",
+            "customer_tier"
+          ],
+          "depends": [
+            "amount_due"
+          ],
+          "when": {
+            "node": "topic",
+            "equals": "billing"
+          },
+          "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+          "criteria": {
+            "priority": "Client premium et correction de facture",
+            "standard": "Autre client, demande de facture",
+            "manual": "Contexte insuffisant"
+          }
+        }
+      ]
+    },
+    "rows": [
+      {
+        "id": "row-1",
+        "message": "Merci de corriger cette facture.",
+        "customer_tier": "standard",
+        "invoice_cents": 5000,
+        "paid_cents": 2000,
+        "unused_private_note": "synthetic-not-sent"
+      },
+      {
+        "id": "row-2",
+        "message": "Merci de corriger cette facture.",
+        "customer_tier": "premium",
+        "invoice_cents": 5000,
+        "paid_cents": 2000,
+        "unused_private_note": "synthetic-not-sent"
+      },
+      {
+        "id": "row-3",
+        "message": "Merci de corriger cette facture.",
+        "customer_tier": "standard",
+        "invoice_cents": 5000,
+        "paid_cents": 2000,
+        "unused_private_note": "synthetic-not-sent"
+      },
+      {
+        "id": "row-4",
+        "message": "Une panne empêche tous les accès.",
+        "customer_tier": "standard",
+        "invoice_cents": 5000,
+        "paid_cents": 2000,
+        "unused_private_note": "synthetic-not-sent"
+      }
+    ]
+  },
+  "compiled": {
+    "model": "jev-1.13.0",
+    "policy_version": "demo-1",
+    "nodes": {
+      "amount_due": {
+        "id": "amount_due",
+        "kind": "subtract",
+        "reads": [
+          "invoice_cents",
+          "paid_cents"
+        ],
+        "depends": []
+      },
+      "topic": {
+        "id": "topic",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Classer le message : facturation, problème technique ou autre.",
+        "criteria": {
+          "billing": "Demande de facturation",
+          "technical": "Problème technique",
+          "other": "Autre demande"
+        },
+        "depends": []
+      },
+      "topic_copy": {
+        "id": "topic_copy",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Classer le message : facturation, problème technique ou autre.",
+        "criteria": {
+          "billing": "Demande de facturation",
+          "technical": "Problème technique",
+          "other": "Autre demande"
+        },
+        "depends": []
+      },
+      "urgency": {
+        "id": "urgency",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+        "criteria": {
+          "urgent": "Interruption de service actuelle",
+          "routine": "Pas d’interruption actuelle déclarée",
+          "unknown": "Contexte insuffisant"
+        },
+        "depends": []
+      },
+      "route": {
+        "id": "route",
+        "kind": "choice",
+        "reads": [
+          "message",
+          "customer_tier"
+        ],
+        "depends": [
+          "amount_due",
+          "topic"
+        ],
+        "when": {
+          "node": "topic",
+          "equals": "billing"
+        },
+        "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+        "criteria": {
+          "priority": "Client premium et correction de facture",
+          "standard": "Autre client, demande de facture",
+          "manual": "Contexte insuffisant"
+        }
+      }
+    },
+    "layers": [
+      [
+        {
+          "id": "amount_due",
+          "kind": "subtract",
+          "reads": [
+            "invoice_cents",
+            "paid_cents"
+          ],
+          "depends": []
+        },
+        {
+          "id": "topic",
+          "kind": "choice",
+          "reads": [
+            "message"
+          ],
+          "instructions": "Classer le message : facturation, problème technique ou autre.",
+          "criteria": {
+            "billing": "Demande de facturation",
+            "technical": "Problème technique",
+            "other": "Autre demande"
+          },
+          "depends": []
+        },
+        {
+          "id": "topic_copy",
+          "kind": "choice",
+          "reads": [
+            "message"
+          ],
+          "instructions": "Classer le message : facturation, problème technique ou autre.",
+          "criteria": {
+            "billing": "Demande de facturation",
+            "technical": "Problème technique",
+            "other": "Autre demande"
+          },
+          "depends": []
+        },
+        {
+          "id": "urgency",
+          "kind": "choice",
+          "reads": [
+            "message"
+          ],
+          "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+          "criteria": {
+            "urgent": "Interruption de service actuelle",
+            "routine": "Pas d’interruption actuelle déclarée",
+            "unknown": "Contexte insuffisant"
+          },
+          "depends": []
+        }
+      ],
+      [
+        {
+          "id": "route",
+          "kind": "choice",
+          "reads": [
+            "message",
+            "customer_tier"
+          ],
+          "depends": [
+            "amount_due",
+            "topic"
+          ],
+          "when": {
+            "node": "topic",
+            "equals": "billing"
+          },
+          "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+          "criteria": {
+            "priority": "Client premium et correction de facture",
+            "standard": "Autre client, demande de facture",
+            "manual": "Contexte insuffisant"
+          }
+        }
+      ]
+    ],
+    "plan_sha256": "e8ce84998f38559df04193bfec3ef32d463f2e7a17c25a971253c1d6fae37ee0",
+    "exact_cache_reuse_requires_same_model_policy_question_and_projected_state": true
+  },
+  "baseline": {
+    "run_id": "258368b08e1e42a59996798a54afaa30",
+    "plan_sha256": "e8ce84998f38559df04193bfec3ef32d463f2e7a17c25a971253c1d6fae37ee0",
+    "policy_version": "demo-1",
+    "provider_namespace": "synthetic-fixture-v1-confidence-1.0",
+    "model": "jev-1.13.0",
+    "status": "completed",
+    "rows": {
+      "row-1": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "routine",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 0.0,
+            "routine": 1.0,
+            "unknown": 0.0
+          },
+          "cache_key": "7bd97e6ba3f853454bc23f0429d5f7dc5814e01a6add4312f391221c700c5f7e",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "route": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "standard",
+          "confidence": 1.0,
+          "probabilities": {
+            "priority": 0.0,
+            "standard": 1.0,
+            "manual": 0.0
+          },
+          "cache_key": "2e5560e7fb56c291fb0d3089721a2df9544fd41a885bcea8c9a9ef251b2b8c32",
+          "question_id": "q0",
+          "origin": "provider"
+        }
+      },
+      "row-2": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "routine",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 0.0,
+            "routine": 1.0,
+            "unknown": 0.0
+          },
+          "cache_key": "7bd97e6ba3f853454bc23f0429d5f7dc5814e01a6add4312f391221c700c5f7e",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "route": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "priority",
+          "confidence": 1.0,
+          "probabilities": {
+            "priority": 1.0,
+            "standard": 0.0,
+            "manual": 0.0
+          },
+          "cache_key": "bb15cc54ba1be027ad9966789bc27b049cb87c60f47172f309e61ea9ccb43ceb",
+          "question_id": "q0",
+          "origin": "provider"
+        }
+      },
+      "row-3": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "routine",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 0.0,
+            "routine": 1.0,
+            "unknown": 0.0
+          },
+          "cache_key": "7bd97e6ba3f853454bc23f0429d5f7dc5814e01a6add4312f391221c700c5f7e",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "route": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "standard",
+          "confidence": 1.0,
+          "probabilities": {
+            "priority": 0.0,
+            "standard": 1.0,
+            "manual": 0.0
+          },
+          "cache_key": "2e5560e7fb56c291fb0d3089721a2df9544fd41a885bcea8c9a9ef251b2b8c32",
+          "question_id": "q0",
+          "origin": "provider"
+        }
+      },
+      "row-4": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "technical",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 0.0,
+            "technical": 1.0,
+            "other": 0.0
+          },
+          "cache_key": "2d44aa558aaf85fe53aa6cef39872b7403f68d88755f825f55e2e39f07900106",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "technical",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 0.0,
+            "technical": 1.0,
+            "other": 0.0
+          },
+          "cache_key": "2d44aa558aaf85fe53aa6cef39872b7403f68d88755f825f55e2e39f07900106",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "urgent",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 1.0,
+            "routine": 0.0,
+            "unknown": 0.0
+          },
+          "cache_key": "720679b3a3e68438630f28e46d0f200f97fe3ed61971f45fcde7d078af0a221c",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "route": {
+          "status": "skipped"
+        }
+      }
+    },
+    "provider_calls": 15,
+    "questions_sent": 15,
+    "persistent_cache_hits": 0,
+    "deduplicated_logical_cells": 0,
+    "naive_question_upper_bound": 16,
+    "usage": {
+      "input_tokens": 1462,
+      "output_tokens": 180
+    },
+    "usage_complete": true,
+    "usage_is_synthetic": true,
+    "trace": [
+      {
+        "status": "provider_completed",
+        "request_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+        "question_keys": [
+          "07c54fe8f11722aecff14fe9d48df1ba8a9bf4ca36b1afefcab3c50dd9cb4fa0"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 81,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+        "question_keys": [
+          "a8b9e7774ded414b7add650f4c727c7c209a47878e54d5870f12cf4fc026472b"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 81,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+        "question_keys": [
+          "dff42f7d24417fb7cb97d454ccc92dce12d8db6ab616d7fe68d0cf978bad5ce3"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 81,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "2d44aa558aaf85fe53aa6cef39872b7403f68d88755f825f55e2e39f07900106",
+        "question_keys": [
+          "e64505d6217bb3f0ce2696213a22ab8c1b7689e5784d4f40c9f0b8d2cc68ca6c"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Une panne empêche tous les accès."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 81,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+        "question_keys": [
+          "3804ee2cee0a49098adb7006be691f965bddd9d9e78a904020034c1581205dbc"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 81,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+        "question_keys": [
+          "eedca2be6fa5fac47988e3f86adbc2e7c48be14153fffd198d95ff8fd497798b"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 81,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "1d487f4782119b8bc743f0dfbc70e3344e6d61d0dab6ce416fd49914996e7316",
+        "question_keys": [
+          "029d8b1eb8a99e880d537e55bff828470da6bac804cb7566718b8617db435287"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 81,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "2d44aa558aaf85fe53aa6cef39872b7403f68d88755f825f55e2e39f07900106",
+        "question_keys": [
+          "911b2d7fa3a4b609b61f7ecccb129c7f56232b2d8d45a215a97c3a80240b5239"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Une panne empêche tous les accès."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 81,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "7bd97e6ba3f853454bc23f0429d5f7dc5814e01a6add4312f391221c700c5f7e",
+        "question_keys": [
+          "dd8e012c969f88c74aded45482ba5bc5cab50cb8f3e3f782b03f90efff456cfa"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+            "criteria": {
+              "urgent": "Interruption de service actuelle",
+              "routine": "Pas d’interruption actuelle déclarée",
+              "unknown": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 105,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "7bd97e6ba3f853454bc23f0429d5f7dc5814e01a6add4312f391221c700c5f7e",
+        "question_keys": [
+          "1a7e97528085b04026869ca3d53b57a8d0a73cdb3418e59bae28bc2b9615a221"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+            "criteria": {
+              "urgent": "Interruption de service actuelle",
+              "routine": "Pas d’interruption actuelle déclarée",
+              "unknown": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 105,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "7bd97e6ba3f853454bc23f0429d5f7dc5814e01a6add4312f391221c700c5f7e",
+        "question_keys": [
+          "80d7a2f5a98db2eb71c62c932201cb8f98f1f83bdf319d5a65857d3e5f19bbfc"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+            "criteria": {
+              "urgent": "Interruption de service actuelle",
+              "routine": "Pas d’interruption actuelle déclarée",
+              "unknown": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 105,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "720679b3a3e68438630f28e46d0f200f97fe3ed61971f45fcde7d078af0a221c",
+        "question_keys": [
+          "3c8ef4564b9ab241df3f65ab3726d1a997afe86a848e7751577bb691a60491eb"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "message": "Une panne empêche tous les accès."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+            "criteria": {
+              "urgent": "Interruption de service actuelle",
+              "routine": "Pas d’interruption actuelle déclarée",
+              "unknown": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 106,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "2e5560e7fb56c291fb0d3089721a2df9544fd41a885bcea8c9a9ef251b2b8c32",
+        "question_keys": [
+          "c3d8664db4b73df3a3b125da9b0c0750548e78038e39ce8a25942c2944b73a88"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "customer_tier": "standard",
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {
+            "amount_due": {
+              "value": 3000
+            },
+            "topic": {
+              "choice": "billing"
+            }
+          }
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+            "criteria": {
+              "priority": "Client premium et correction de facture",
+              "standard": "Autre client, demande de facture",
+              "manual": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 131,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "bb15cc54ba1be027ad9966789bc27b049cb87c60f47172f309e61ea9ccb43ceb",
+        "question_keys": [
+          "8de4736fe8ce7b863ffa143bd9df0aeb3ae135f20e431e4054b6fd3be05a6d3d"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "customer_tier": "premium",
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {
+            "amount_due": {
+              "value": 3000
+            },
+            "topic": {
+              "choice": "billing"
+            }
+          }
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+            "criteria": {
+              "priority": "Client premium et correction de facture",
+              "standard": "Autre client, demande de facture",
+              "manual": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 131,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "2e5560e7fb56c291fb0d3089721a2df9544fd41a885bcea8c9a9ef251b2b8c32",
+        "question_keys": [
+          "808a6f991d49ace22d4b1bf695422c24bc6e717b61d136e9dbc9f2059abcc748"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "customer_tier": "standard",
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {
+            "amount_due": {
+              "value": 3000
+            },
+            "topic": {
+              "choice": "billing"
+            }
+          }
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+            "criteria": {
+              "priority": "Client premium et correction de facture",
+              "standard": "Autre client, demande de facture",
+              "manual": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 131,
+          "output_tokens": 12
+        }
+      }
+    ],
+    "threshold_uncalibrated": 0.8,
+    "independent_stochastic_samples_preserved": false,
+    "optimization_enabled": false,
+    "input_sha256": "e0ace461e853bea37fc50e6c4a5fe3242335f0dcd2a9d3034136128eabaa3608"
+  },
+  "cold": {
+    "run_id": "2232560f1c9248a5b85b9fe08fe6f9b3",
+    "plan_sha256": "e8ce84998f38559df04193bfec3ef32d463f2e7a17c25a971253c1d6fae37ee0",
+    "policy_version": "demo-1",
+    "provider_namespace": "synthetic-fixture-v1-confidence-1.0",
+    "model": "jev-1.13.0",
+    "status": "completed",
+    "rows": {
+      "row-1": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "routine",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 0.0,
+            "routine": 1.0,
+            "unknown": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q0",
+          "origin": "provider_shared"
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "route": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "standard",
+          "confidence": 1.0,
+          "probabilities": {
+            "priority": 0.0,
+            "standard": 1.0,
+            "manual": 0.0
+          },
+          "cache_key": "2e5560e7fb56c291fb0d3089721a2df9544fd41a885bcea8c9a9ef251b2b8c32",
+          "question_id": "q0",
+          "origin": "provider_shared"
+        }
+      },
+      "row-2": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "routine",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 0.0,
+            "routine": 1.0,
+            "unknown": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q0",
+          "origin": "provider_shared"
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "route": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "priority",
+          "confidence": 1.0,
+          "probabilities": {
+            "priority": 1.0,
+            "standard": 0.0,
+            "manual": 0.0
+          },
+          "cache_key": "bb15cc54ba1be027ad9966789bc27b049cb87c60f47172f309e61ea9ccb43ceb",
+          "question_id": "q0",
+          "origin": "provider"
+        }
+      },
+      "row-3": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "routine",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 0.0,
+            "routine": 1.0,
+            "unknown": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q0",
+          "origin": "provider_shared"
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "route": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "standard",
+          "confidence": 1.0,
+          "probabilities": {
+            "priority": 0.0,
+            "standard": 1.0,
+            "manual": 0.0
+          },
+          "cache_key": "2e5560e7fb56c291fb0d3089721a2df9544fd41a885bcea8c9a9ef251b2b8c32",
+          "question_id": "q0",
+          "origin": "provider_shared"
+        }
+      },
+      "row-4": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "urgent",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 1.0,
+            "routine": 0.0,
+            "unknown": 0.0
+          },
+          "cache_key": "144ab53badf2cb7cc09bc65cf3aa5762da6bde0a13dd039273ea15aa2f36ad8c",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "technical",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 0.0,
+            "technical": 1.0,
+            "other": 0.0
+          },
+          "cache_key": "144ab53badf2cb7cc09bc65cf3aa5762da6bde0a13dd039273ea15aa2f36ad8c",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "technical",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 0.0,
+            "technical": 1.0,
+            "other": 0.0
+          },
+          "cache_key": "144ab53badf2cb7cc09bc65cf3aa5762da6bde0a13dd039273ea15aa2f36ad8c",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "route": {
+          "status": "skipped"
+        }
+      }
+    },
+    "provider_calls": 4,
+    "questions_sent": 6,
+    "persistent_cache_hits": 0,
+    "deduplicated_logical_cells": 9,
+    "naive_question_upper_bound": 16,
+    "usage": {
+      "input_tokens": 577,
+      "output_tokens": 72
+    },
+    "usage_complete": true,
+    "usage_is_synthetic": true,
+    "trace": [
+      {
+        "status": "provider_completed",
+        "request_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+        "question_keys": [
+          "67340c699d8f99f1d084dfbe0a0adadb04803c8299fb114dffcce4beae16db59",
+          "d9a7b5a5d0c7639064163d11aeb7bd2d2c00c0ac0b5961bd7d8b69f5bb2066fc"
+        ],
+        "question_count": 2,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+            "criteria": {
+              "urgent": "Interruption de service actuelle",
+              "routine": "Pas d’interruption actuelle déclarée",
+              "unknown": "Contexte insuffisant"
+            }
+          },
+          "q1": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 157,
+          "output_tokens": 24
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "144ab53badf2cb7cc09bc65cf3aa5762da6bde0a13dd039273ea15aa2f36ad8c",
+        "question_keys": [
+          "53cfb6304ec36676ac3341c6612e67cb910bef968f45917ae2a169228be41219",
+          "603d7459db64b65b16de20d5cf46988ba686f6fa1870ae34fc0b860dc63478a4"
+        ],
+        "question_count": 2,
+        "projected_state": {
+          "columns": {
+            "message": "Une panne empêche tous les accès."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+            "criteria": {
+              "urgent": "Interruption de service actuelle",
+              "routine": "Pas d’interruption actuelle déclarée",
+              "unknown": "Contexte insuffisant"
+            }
+          },
+          "q1": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 158,
+          "output_tokens": 24
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "2e5560e7fb56c291fb0d3089721a2df9544fd41a885bcea8c9a9ef251b2b8c32",
+        "question_keys": [
+          "60bece48fcf1c8e21229176a88fa661822ccca48489dbdbefd14522cd0215b71"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "customer_tier": "standard",
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {
+            "amount_due": {
+              "value": 3000
+            },
+            "topic": {
+              "choice": "billing"
+            }
+          }
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+            "criteria": {
+              "priority": "Client premium et correction de facture",
+              "standard": "Autre client, demande de facture",
+              "manual": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 131,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "bb15cc54ba1be027ad9966789bc27b049cb87c60f47172f309e61ea9ccb43ceb",
+        "question_keys": [
+          "68bd1e31af58de2b9ce71a2a14432385829f6db353b3debb6a6e21582aa6b87b"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "customer_tier": "premium",
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {
+            "amount_due": {
+              "value": 3000
+            },
+            "topic": {
+              "choice": "billing"
+            }
+          }
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+            "criteria": {
+              "priority": "Client premium et correction de facture",
+              "standard": "Autre client, demande de facture",
+              "manual": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 131,
+          "output_tokens": 12
+        }
+      }
+    ],
+    "threshold_uncalibrated": 0.8,
+    "independent_stochastic_samples_preserved": false,
+    "optimization_enabled": true,
+    "input_sha256": "e0ace461e853bea37fc50e6c4a5fe3242335f0dcd2a9d3034136128eabaa3608"
+  },
+  "selected": {
+    "run_id": "2232560f1c9248a5b85b9fe08fe6f9b3",
+    "plan_sha256": "e8ce84998f38559df04193bfec3ef32d463f2e7a17c25a971253c1d6fae37ee0",
+    "policy_version": "demo-1",
+    "provider_namespace": "synthetic-fixture-v1-confidence-1.0",
+    "model": "jev-1.13.0",
+    "status": "completed",
+    "rows": {
+      "row-1": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "routine",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 0.0,
+            "routine": 1.0,
+            "unknown": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q0",
+          "origin": "provider_shared"
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "route": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "standard",
+          "confidence": 1.0,
+          "probabilities": {
+            "priority": 0.0,
+            "standard": 1.0,
+            "manual": 0.0
+          },
+          "cache_key": "2e5560e7fb56c291fb0d3089721a2df9544fd41a885bcea8c9a9ef251b2b8c32",
+          "question_id": "q0",
+          "origin": "provider_shared"
+        }
+      },
+      "row-2": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "routine",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 0.0,
+            "routine": 1.0,
+            "unknown": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q0",
+          "origin": "provider_shared"
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "route": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "priority",
+          "confidence": 1.0,
+          "probabilities": {
+            "priority": 1.0,
+            "standard": 0.0,
+            "manual": 0.0
+          },
+          "cache_key": "bb15cc54ba1be027ad9966789bc27b049cb87c60f47172f309e61ea9ccb43ceb",
+          "question_id": "q0",
+          "origin": "provider"
+        }
+      },
+      "row-3": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "routine",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 0.0,
+            "routine": 1.0,
+            "unknown": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q0",
+          "origin": "provider_shared"
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "billing",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 1.0,
+            "technical": 0.0,
+            "other": 0.0
+          },
+          "cache_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "route": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "standard",
+          "confidence": 1.0,
+          "probabilities": {
+            "priority": 0.0,
+            "standard": 1.0,
+            "manual": 0.0
+          },
+          "cache_key": "2e5560e7fb56c291fb0d3089721a2df9544fd41a885bcea8c9a9ef251b2b8c32",
+          "question_id": "q0",
+          "origin": "provider_shared"
+        }
+      },
+      "row-4": {
+        "amount_due": {
+          "status": "exact",
+          "value": 3000
+        },
+        "urgency": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "urgent",
+          "confidence": 1.0,
+          "probabilities": {
+            "urgent": 1.0,
+            "routine": 0.0,
+            "unknown": 0.0
+          },
+          "cache_key": "144ab53badf2cb7cc09bc65cf3aa5762da6bde0a13dd039273ea15aa2f36ad8c",
+          "question_id": "q0",
+          "origin": "provider"
+        },
+        "topic": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "technical",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 0.0,
+            "technical": 1.0,
+            "other": 0.0
+          },
+          "cache_key": "144ab53badf2cb7cc09bc65cf3aa5762da6bde0a13dd039273ea15aa2f36ad8c",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "topic_copy": {
+          "status": "decided",
+          "type": "choice",
+          "choice": "technical",
+          "confidence": 1.0,
+          "probabilities": {
+            "billing": 0.0,
+            "technical": 1.0,
+            "other": 0.0
+          },
+          "cache_key": "144ab53badf2cb7cc09bc65cf3aa5762da6bde0a13dd039273ea15aa2f36ad8c",
+          "question_id": "q1",
+          "origin": "provider_shared"
+        },
+        "route": {
+          "status": "skipped"
+        }
+      }
+    },
+    "provider_calls": 4,
+    "questions_sent": 6,
+    "persistent_cache_hits": 0,
+    "deduplicated_logical_cells": 9,
+    "naive_question_upper_bound": 16,
+    "usage": {
+      "input_tokens": 577,
+      "output_tokens": 72
+    },
+    "usage_complete": true,
+    "usage_is_synthetic": true,
+    "trace": [
+      {
+        "status": "provider_completed",
+        "request_key": "67daa01df590716489aca2f5a4f666df24aae1be24a92adf0ef1b796a954bb99",
+        "question_keys": [
+          "67340c699d8f99f1d084dfbe0a0adadb04803c8299fb114dffcce4beae16db59",
+          "d9a7b5a5d0c7639064163d11aeb7bd2d2c00c0ac0b5961bd7d8b69f5bb2066fc"
+        ],
+        "question_count": 2,
+        "projected_state": {
+          "columns": {
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+            "criteria": {
+              "urgent": "Interruption de service actuelle",
+              "routine": "Pas d’interruption actuelle déclarée",
+              "unknown": "Contexte insuffisant"
+            }
+          },
+          "q1": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 157,
+          "output_tokens": 24
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "144ab53badf2cb7cc09bc65cf3aa5762da6bde0a13dd039273ea15aa2f36ad8c",
+        "question_keys": [
+          "53cfb6304ec36676ac3341c6612e67cb910bef968f45917ae2a169228be41219",
+          "603d7459db64b65b16de20d5cf46988ba686f6fa1870ae34fc0b860dc63478a4"
+        ],
+        "question_count": 2,
+        "projected_state": {
+          "columns": {
+            "message": "Une panne empêche tous les accès."
+          },
+          "decisions": {}
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir urgent seulement si le message décrit une interruption de service actuelle ; sinon routine ou unknown si indécidable.",
+            "criteria": {
+              "urgent": "Interruption de service actuelle",
+              "routine": "Pas d’interruption actuelle déclarée",
+              "unknown": "Contexte insuffisant"
+            }
+          },
+          "q1": {
+            "type": "choice",
+            "instructions": "Classer le message : facturation, problème technique ou autre.",
+            "criteria": {
+              "billing": "Demande de facturation",
+              "technical": "Problème technique",
+              "other": "Autre demande"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 158,
+          "output_tokens": 24
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "2e5560e7fb56c291fb0d3089721a2df9544fd41a885bcea8c9a9ef251b2b8c32",
+        "question_keys": [
+          "60bece48fcf1c8e21229176a88fa661822ccca48489dbdbefd14522cd0215b71"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "customer_tier": "standard",
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {
+            "amount_due": {
+              "value": 3000
+            },
+            "topic": {
+              "choice": "billing"
+            }
+          }
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+            "criteria": {
+              "priority": "Client premium et correction de facture",
+              "standard": "Autre client, demande de facture",
+              "manual": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 131,
+          "output_tokens": 12
+        }
+      },
+      {
+        "status": "provider_completed",
+        "request_key": "bb15cc54ba1be027ad9966789bc27b049cb87c60f47172f309e61ea9ccb43ceb",
+        "question_keys": [
+          "68bd1e31af58de2b9ce71a2a14432385829f6db353b3debb6a6e21582aa6b87b"
+        ],
+        "question_count": 1,
+        "projected_state": {
+          "columns": {
+            "customer_tier": "premium",
+            "message": "Merci de corriger cette facture."
+          },
+          "decisions": {
+            "amount_due": {
+              "value": 3000
+            },
+            "topic": {
+              "choice": "billing"
+            }
+          }
+        },
+        "questions": {
+          "q0": {
+            "type": "choice",
+            "instructions": "Choisir priority pour un client premium demandant une correction de facture ; standard pour les autres clients, manual si le contexte manque.",
+            "criteria": {
+              "priority": "Client premium et correction de facture",
+              "standard": "Autre client, demande de facture",
+              "manual": "Contexte insuffisant"
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 131,
+          "output_tokens": 12
+        }
+      }
+    ],
+    "threshold_uncalibrated": 0.8,
+    "independent_stochastic_samples_preserved": false,
+    "optimization_enabled": true,
+    "input_sha256": "e0ace461e853bea37fc50e6c4a5fe3242335f0dcd2a9d3034136128eabaa3608"
+  },
+  "sql": "SELECT row_id, choice, confidence FROM decisions WHERE run_id='2232560f1c9248a5b85b9fe08fe6f9b3' AND node_id='route' AND status='decided' ORDER BY row_id",
+  "sql_rows": [
+    {
+      "row_id": "row-1",
+      "choice": "standard",
+      "confidence": 1.0
+    },
+    {
+      "row_id": "row-2",
+      "choice": "priority",
+      "confidence": 1.0
+    },
+    {
+      "row_id": "row-3",
+      "choice": "standard",
+      "confidence": 1.0
+    }
+  ]
+}

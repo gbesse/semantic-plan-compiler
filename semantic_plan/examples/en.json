@@ -1,0 +1,110 @@
+{
+  "plan": {
+    "model": "jev-1.13.0",
+    "policy_version": "demo-1",
+    "nodes": [
+      {
+        "id": "amount_due",
+        "kind": "subtract",
+        "reads": [
+          "invoice_cents",
+          "paid_cents"
+        ]
+      },
+      {
+        "id": "topic",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Classify the message: billing, technical issue or other.",
+        "criteria": {
+          "billing": "Billing request",
+          "technical": "Technical issue",
+          "other": "Other request"
+        }
+      },
+      {
+        "id": "topic_copy",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Classify the message: billing, technical issue or other.",
+        "criteria": {
+          "billing": "Billing request",
+          "technical": "Technical issue",
+          "other": "Other request"
+        }
+      },
+      {
+        "id": "urgency",
+        "kind": "choice",
+        "reads": [
+          "message"
+        ],
+        "instructions": "Choose urgent only if the message describes a current service outage; otherwise routine or unknown if undecidable.",
+        "criteria": {
+          "urgent": "Current service outage",
+          "routine": "No current outage stated",
+          "unknown": "Insufficient context"
+        }
+      },
+      {
+        "id": "route",
+        "kind": "choice",
+        "reads": [
+          "message",
+          "customer_tier"
+        ],
+        "depends": [
+          "amount_due"
+        ],
+        "when": {
+          "node": "topic",
+          "equals": "billing"
+        },
+        "instructions": "Choose priority for a premium customer requesting an invoice correction; standard for other customers, manual if context is missing.",
+        "criteria": {
+          "priority": "Premium customer and invoice correction",
+          "standard": "Other customer with invoice request",
+          "manual": "Insufficient context"
+        }
+      }
+    ]
+  },
+  "rows": [
+    {
+      "id": "row-1",
+      "message": "Please correct this invoice.",
+      "customer_tier": "standard",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    },
+    {
+      "id": "row-2",
+      "message": "Please correct this invoice.",
+      "customer_tier": "premium",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    },
+    {
+      "id": "row-3",
+      "message": "Please correct this invoice.",
+      "customer_tier": "standard",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    },
+    {
+      "id": "row-4",
+      "message": "An outage blocks all access.",
+      "customer_tier": "standard",
+      "invoice_cents": 5000,
+      "paid_cents": 2000,
+      "unused_private_note": "synthetic-not-sent"
+    }
+  ]
+}

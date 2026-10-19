@@ -1,0 +1,3 @@
+recursive-include semantic_plan/web *
+recursive-include semantic_plan/examples *
+include README*.md LICENSE
